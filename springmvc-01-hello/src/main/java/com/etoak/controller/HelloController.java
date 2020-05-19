@@ -14,8 +14,8 @@ public class HelloController implements HttpRequestHandler {
 	public void handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String name = request.getParameter("name");
-		System.out.println("param name -" + name);
-		request.setAttribute("result", "Hello" + name);
+		System.out.println("param name -   " + name);
+		request.setAttribute("result", "Hello   " + name);
 		
 		request.getRequestDispatcher("/hello.jsp").forward(request, response);
 	}
