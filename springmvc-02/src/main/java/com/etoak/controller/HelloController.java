@@ -18,7 +18,7 @@ public class HelloController implements Controller {
 		
 		
 		//返回页面
-		ModelAndView mv = new ModelAndView();
+		ModelAndView    mv = new ModelAndView();
 		mv.setViewName("hello");
 		
 		//向request域传值
