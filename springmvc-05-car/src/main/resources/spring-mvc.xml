@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+	
+	<!-- 配置注解扫描器 -->
+	<context:component-scan base-package="com.etoak">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<!-- 表示只扫面@Controller注解 -->
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+	</context:component-scan>
+	
+	
+	<!-- 开启spring mvc 配置 -->
+	<!--作用: 1. 可以代替RequestMappingHandlerMapping和RequestMappingHandlerAdapter
+			 2. 内置了大量的参数转换器
+			 3. 也可以自定义转换器
+			 4. 可以使用@RequestBody接受json参数, 也可以使用@ResponseBody
+			 4.1 默认使用Jackson框架进行json转换
+	-->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	
+	<!-- spring mvc 的静态资源处理 -->
+	<!--将静态资源( css  js) 等资源交给servlet容器内置的名字叫default的servlet处理  -->
+	<mvc:default-servlet-handler/>
+	
+	
+	<!-- 整合Thymeleaf -->
+	<bean id="templateResolver"
+		class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/templates/"></property>
+		<property name="suffix" value=".html"></property>
+		<property name="characterEncoding" value="UTF-8"></property>
+		<property name="templateMode" value="HTML"></property>
+		<!-- 在开发环境下设置成false,方便调试页面 -->
+		<property name="cacheable" value="false"></property>
+		
+	</bean>
+	
+	<bean id="templateEngine"
+		class="org.thymeleaf.spring5.SpringTemplateEngine">
+		<!--ref:引入另一个bean标签  -->
+		<property name="templateResolver" ref="templateResolver"></property>
+	
+	</bean>
+	
+	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine"></property>
+		<property name="characterEncoding" value="UTF-8"></property>
+	</bean>
+	
+	
+
+	
+	
+	
+	
+</beans>
