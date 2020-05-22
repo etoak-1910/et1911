@@ -15,6 +15,11 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<!-- 表示只扫面@Controller注解 -->
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+		
+		
+		<!--排除@Service和@Repository -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
 	
 	
@@ -32,6 +37,7 @@
 	<!--将静态资源( css  js) 等资源交给servlet容器内置的名字叫default的servlet处理  -->
 	<mvc:default-servlet-handler/>
 	
+	<mvc:resources location="file:d:/upload/" mapping="/pic/**"></mvc:resources>
 	
 	<!-- 整合Thymeleaf -->
 	<bean id="templateResolver"
@@ -58,7 +64,10 @@
 	</bean>
 	
 	
-
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		
+		<property name="maxUploadSize" value="2097152"></property>
+	</bean>
 	
 	
 	

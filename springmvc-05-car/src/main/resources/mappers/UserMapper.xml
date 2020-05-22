@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etoak.mapper.UserMapper">
+	
+	<select id="getById" parameterType="int" resultType="User">
+		SELECT 
+			id,
+			name,
+			password,
+			age
+			From t_springmvc_user
+			where id = #{value}
+	</select>
+	
+	
+	
+	
+
+</mapper>
