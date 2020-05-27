@@ -4,36 +4,137 @@
 <mapper namespace="com.etoak.mapper.CarMapper">
 
 
-	<!-- 添加车辆信息 -->	
+	<!-- 添加车辆信息 -->
 	<insert id="addCar" parameterType="Car">
 		INSERT INTO t_springmvc_car (
-			brand, 
-			series, 
-			price, 
-			licensing_time,
-			level,
-			 gearbox, 
-			 output_volume,
-			mileage,
-			location,
-			pic,
-			summary,
-			create_time
+		brand,
+		series,
+		price,
+		licensing_time,
+		level,
+		gearbox,
+		output_volume,
+		mileage,
+		location,
+		pic,
+		summary,
+		create_time
 		) VALUES (
-			#{brand},
-			#{series},
-			#{price},
-			#{licensingTime},
-			#{level},
-			#{gearbox},
-			#{outputVolume},
-			#{mileage},
-			#{location},
-			#{pic},
-			#{summary},
-			NOW()
+		#{brand},
+		#{series},
+		#{price},
+		#{licensingTime},
+		#{level},
+		#{gearbox},
+		#{outputVolume},
+		#{mileage},
+		#{location},
+		#{pic},
+		#{summary},
+		NOW()
 		)
 	</insert>
+
+	<select id="queryList" parameterType="CarVo" resultType="CarVo">
+
+		select t.id,
+		t.brand,
+		t.series,
+		t.price,
+		t.licensing_time as licensingTime,
+		t.level,
+		t.gearbox,
+		t.output_volume as outputVolume,
+		t.mileage,
+		t.location,
+		t.pic,
+		t.summary,
+		t.create_time as createTime,
+		t2.name as levelName,
+		t3.name AS gearboxName,
+		t4.name AS outputVolumeName
+
+		FROM t_springmvc_car t
+		left join t_springmvc_dict t2 on t.level = t2.value and t2.group_id =
+		'level'
+		left join t_springmvc_dict t3 on t.gearbox = t3.value and t3.group_id =
+		'gearbox'
+		left join t_springmvc_dict t4 on t.output_volume = t4.value and
+		t4.group_id = 'output_volume'
+		
+		<where>
+			
+			<if test="brand != null and brand != '' ">
+		  		AND brand = #{brand}
+		  	</if>
+			
+			<if test="series !=null and series !='' ">
+				and series = #{series}
+			</if>
+			
+			<if test="level !=null and level !='' ">
+				and level = #{level}
+			</if>
+			
+			<if test="gearbox !=null and gearbox !='' ">
+				and gearbox = #{gearbox}
+			</if>
+			
+			<if test="outputVolume != null and outputVolume != '' ">
+		  		AND output_volume = #{outputVolume}
+		  	</if>
+			
+			
+			<if test="location !=null and location !='' ">
+				and location like concat('%',#{location},'%')
+			</if>
+			
+			<if test="priceMapList !=null and priceMapList.size() !=0">
+				AND
+				<foreach collection="priceMapList" item="priceMap" open="(" close=")" separator="OR">
+					price between #{priceMap.start} and #{priceMap.end}
+				</foreach>
+			
+			</if>
+			
+			<if test="startYear !=null and startYear !=0">
+				and str_to_date(licensing_time,'%Y-%m')
+				>= date_sub(curdate(),interval #{startYear} year)
+			</if>
+			
+			<if test="endYear !=null and endYear !=0">
+				<![CDATA[
+				and str_to_date(licensing_time,'%Y-%m')
+				<= date_sub(curdate(),interval #{endYear} year)
+				]]>
+			</if>
+			
+		
+		</where>
+
+	</select>
+
+	<select id="getAllBrand" resultType="String">
+		select brand from
+		t_springmvc_car group by brand
+
+	</select>
+
+	<select id="getSeriesByBrand" parameterType="String"
+		resultType="String">
+		select series from t_springmvc_car
+		<where>
+			<if test="brand !=null and brand != ''">
+				brand = #{brand}
+			</if>
+		</where>
+		GROUP BY series
+		<if test="brand == null or brand == ''">
+			LIMIT 10
+		</if>
+
+	</select>
+
 
 
 

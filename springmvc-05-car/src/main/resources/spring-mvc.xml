@@ -15,6 +15,7 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<!-- 表示只扫面@Controller注解 -->
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 		
 		
 		<!--排除@Service和@Repository -->
@@ -69,6 +70,7 @@
 		<property name="maxUploadSize" value="2097152"></property>
 	</bean>
 	
+	<mvc:view-controller path="/" view-name="index" />
 	
 	
 	
