@@ -72,6 +72,23 @@
 	
 	<mvc:view-controller path="/" view-name="index" />
 	
+	<mvc:view-controller path="/user/toLogin" view-name="login" />
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!--配置需要拦截的地址  -->
+			<mvc:mapping path="/**"/>
+			<!--配置不需要拦截的地址  -->
+			<mvc:exclude-mapping path="/static/**"/>
+			<mvc:exclude-mapping path="/code"/>
+			<mvc:exclude-mapping path="/user/toLogin"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<!--配置拦截器  -->
+			<bean class="com.etoak.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	
+	</mvc:interceptors>
+	
 	
 	
 </beans>

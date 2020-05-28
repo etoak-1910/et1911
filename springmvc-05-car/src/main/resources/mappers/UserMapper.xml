@@ -13,6 +13,17 @@
 			where id = #{value}
 	</select>
 	
+	<select id="getByNameAndPassword" resultType="User">
+		SELECT 
+			id,
+			name,
+			password,
+			age
+			From t_springmvc_user
+			where name = #{name} and password = #{password}
+		
+	</select>
+	
 	
 	
 	
